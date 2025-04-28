@@ -20,29 +20,6 @@ const latestHiking = {
   comment: '진한 봄을 봉산에서 느끼다!\n비회원도 환영~ \n 회장 총무 또는 단톡방에 문의해주세요~'
 };
 
-// 난이도별 설정
-const difficultyInfo = {
-  '초급': {
-    color: '#4CAF50',
-    icon: '🌳',
-    warning: false
-  },
-  '중급': {
-    color: '#FF9800',
-    icon: '⛰️',
-    warning: false
-  },
-  '상급': {
-    color: '#f44336',
-    icon: '🏔️',
-    warning: true
-  }
-};
-
-// 구글 드라이브 공유 링크를 여기에 입력하세요!
-const attendanceUrl = "https://drive.google.com/your-attendance-link";
-const feeUrl = "https://drive.google.com/your-fee-link";
-
 function App() {
   const [page, setPage] = useState('main');
 
