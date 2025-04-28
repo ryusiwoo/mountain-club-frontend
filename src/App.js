@@ -135,17 +135,20 @@ function App() {
         </button>
       </div>
 
-      {page === 'previous' && (
+      {page === 'main' && (
         <>
-          <PreviousHikes />
-          <div style={{ textAlign: 'center', margin: '20px 0' }}>
-            <button style={backBtnStyle} onClick={goToMain}>메인으로</button>
-          </div>
+          {page === 'previous' && (
+            <>
+              <PreviousHikes />
+              <div style={{ textAlign: 'center', margin: '20px 0' }}>
+                <button style={backBtnStyle} onClick={goToMain}>메인으로</button>
+              </div>
+            </>
+          )}
+          {page === 'attendance' && renderAttendance()}
+          {page === 'fee' && renderFee()}
         </>
       )}
-
-      {page === 'attendance' && renderAttendance()}
-      {page === 'fee' && renderFee()}
 
       {/* 모바일 스타일 */}
       <style>
