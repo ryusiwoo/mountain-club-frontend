@@ -20,221 +20,6 @@ const latestHiking = {
   comment: '진한 봄을 봉산에서 느끼다!\n비회원도 환영~ \n 회장 총무 또는 단톡방에 문의해주세요~'
 };
 
-function App() {
-  const [page, setPage] = useState('main');
-
-  // 최신 사진 폴더(갤러리)로 이동하는 함수
-  const openLatestGallery = () => {
-    alert('5월1일 봉산 이벤트 산행 후 사진 갤러리로 이동합니다! (추후 구현)');
-    // 실제로는 페이지 이동 또는 모달 오픈 등 구현
-  };
-
-  // 페이지 전환 함수
-  const goToPrevious = () => setPage('previous');
-  const goToAttendance = () => window.open('https://drive.google.com/file/d/1sWutn4J1UQC3U0jXPrm7TV8xbaudn8pa/view?usp=sharing', '_blank');
-  const goToFee = () => window.open('https://docs.google.com/spreadsheets/d/1Sy2fHW-HJ0jE9hUZYH_ytBRqQfFQi4Pg/edit?usp=sharing&ouid=112996001461247382287&rtpof=true&sd=true', '_blank');
-  const goToMain = () => setPage('main');
-
-  // 출석부, 회비내역은 아직 미구현이므로 임시 화면
-  const renderAttendance = () => (
-    <div style={dummyPageStyle}>
-      <h2>출석부</h2>
-      <button style={backBtnStyle} onClick={goToMain}>메인으로</button>
-    </div>
-  );
-  const renderFee = () => (
-    <div style={dummyPageStyle}>
-      <h2>회비 내역</h2>
-      <button style={backBtnStyle} onClick={goToMain}>메인으로</button>
-    </div>
-  );
-
-  return (
-    <div style={containerStyle}>
-      {/* 테스트 버전 안내 코멘트: 제목 위에 배치 */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: 420,
-          margin: '0 auto',
-          textAlign: 'right',
-          color: '#aaa',
-          fontSize: '0.95rem',
-          fontWeight: 600,
-          opacity: 0.95,
-          padding: '12px 0 0 0'
-        }}
-      >
-        ※ 테스트 버전입니다. 구글정책상 로그인을 요구할 수도 있습니다. (by 총무)
-      </div>
-
-      {/* 제목 */}
-      <h1 style={titleStyle} className="main-title gradient-title">
-        <span style={{ fontSize: '1.2em', verticalAlign: 'middle' }}>🚂 수색차량</span>
-        <br />
-        우리산악회 산행 갤러리
-      </h1>
-
-      {/* 2. 사진 갤러리 */}
-      <div style={galleryGridStyle} className="gallery-grid">
-        {latestPhotos.map((url, idx) => (
-          <img
-            key={idx}
-            src={url}
-            alt={`최신 산행 사진 ${idx + 1}`}
-            style={thumbnailStyle}
-            onClick={openLatestGallery}
-            className="thumbnail"
-          />
-        ))}
-      </div>
-
-      {/* 3. 산행 정보 */}
-      <div style={commentSectionStyle} className="comment-section">
-        <div style={headerStyle} className="header">
-          <span style={dateStyle}>{latestHiking.date}</span>
-          <span style={locationStyle}>{latestHiking.location}</span>
-        </div>
-        <div style={infoStyle} className="hiking-info">
-          <span style={infoItemStyle}><span style={iconStyle}>👥</span>{latestHiking.participants}명</span>
-          <span style={infoItemStyle}><span style={iconStyle}>🗺️</span>{latestHiking.distance}</span>
-          <span style={infoItemStyle}><span style={iconStyle}>⛰️</span>{latestHiking.difficulty}</span>
-        </div>
-        <p style={commentTextStyle}>
-          {latestHiking.comment.split('\n').map((line, idx) => (
-            <React.Fragment key={idx}>
-              {line}
-              <br />
-            </React.Fragment>
-          ))}
-        </p>
-      </div>
-
-      {/* 4. 하단 버튼 */}
-      <div style={navButtonGroupStyle} className="nav-button-group">
-        <button
-          style={{ ...navButtonStyle, background: '#4f8cff' }}
-          onClick={goToPrevious}
-        >
-          <span style={navIconStyle}>🗂️</span>
-          <span>산행사진</span>
-        </button>
-        <button
-          style={{ ...navButtonStyle, background: '#43c59e' }}
-          onClick={goToAttendance}
-        >
-          <span style={navIconStyle}>📝</span>
-          <span>산행출석부</span>
-        </button>
-        <button
-          style={{ ...navButtonStyle, background: '#ffb400' }}
-          onClick={goToFee}
-        >
-          <span style={navIconStyle}>💰</span>
-          <span>회비내역</span>
-        </button>
-      </div>
-
-      {page === 'main' && (
-        <>
-          {page === 'previous' && (
-            <>
-              <PreviousHikes />
-              <div style={{ textAlign: 'center', margin: '20px 0' }}>
-                <button style={backBtnStyle} onClick={goToMain}>메인으로</button>
-              </div>
-            </>
-          )}
-          {page === 'attendance' && renderAttendance()}
-          {page === 'fee' && renderFee()}
-        </>
-      )}
-
-      {/* 모바일 스타일 */}
-      <style>
-        {`
-          @media (max-width: 600px) {
-            .main-title {
-              font-size: 9vw !important;
-              padding: 0 4vw !important;
-              white-space: nowrap !important;
-              overflow: hidden !important;
-              text-overflow: ellipsis !important;
-              text-align: center !important;
-            }
-            .gallery-grid {
-              grid-template-columns: 1fr 1fr !important;
-              gap: 10px !important;
-              padding: 10px !important;
-              width: 95vw !important;
-              max-width: 95vw !important;
-            }
-            .thumbnail {
-              width: 100% !important;
-              height: 35vw !important;
-            }
-            .comment-section {
-              width: 95vw !important;
-              max-width: 95vw !important;
-              margin: 12px auto !important;
-              padding: 12px !important;
-              box-sizing: border-box !important;
-            }
-            .header {
-              align-items: center !important;
-              text-align: center !important;
-            }
-            .hiking-info {
-              justify-content: center !important;
-              gap: 15px !important;
-              margin-top: 8px !important;
-            }
-            .nav-button-group {
-              flex-direction: row !important;
-              gap: 10px !important;
-              width: 95vw !important;
-              margin: 0 auto 20px auto !important;
-              justify-content: center !important;
-            }
-            .nav-btn {
-              font-size: 0.9rem !important;
-              padding: 10px 0 !important;
-            }
-          }
-          .gradient-title {
-            background: linear-gradient(90deg, #4f8cff 10%, #43c59e 60%, #ffb400 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-          }
-        `}
-      </style>
-
-      {/* 방문자 카운터: 하단 우측에 고정 */}
-      <div
-        style={{
-          position: 'fixed',
-          right: 10,
-          bottom: 8,
-          zIndex: 100,
-          fontSize: '0.8rem',
-          opacity: 0.7
-        }}
-      >
-        <a href="https://www.hitwebcounter.com" target="_blank" rel="noopener noreferrer">
-          <img
-            src="https://hitwebcounter.com/counter/counter.php?page=20524626&style=0006&nbdigits=3&type=page&initCount=0"
-            title="Counter Widget"
-            alt="Visit counter For Websites"
-            style={{ height: 18, verticalAlign: 'middle', border: 0 }}
-          />
-        </a>
-      </div>
-    </div>
-  );
-}
-
 const containerStyle = {
   minHeight: '100vh',
   background: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)',
@@ -252,7 +37,6 @@ const titleStyle = {
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  // 그라데이션은 클래스에서 처리
 };
 
 const galleryGridStyle = {
@@ -393,5 +177,294 @@ const backBtnStyle = {
   fontSize: '1rem',
   cursor: 'pointer'
 };
+
+function App() {
+  const [page, setPage] = useState('main');
+
+  // 최신 사진 폴더(갤러리)로 이동하는 함수
+  const openLatestGallery = () => {
+    alert('5월1일 봉산 이벤트 산행 후 사진 갤러리로 이동합니다! (추후 구현)');
+    // 실제로는 페이지 이동 또는 모달 오픈 등 구현
+  };
+
+  // 페이지 전환 함수
+  const goToPrevious = () => setPage('previous');
+  const goToAttendance = () => window.open('https://drive.google.com/file/d/1sWutn4J1UQC3U0jXPrm7TV8xbaudn8pa/view?usp=sharing', '_blank');
+  const goToFee = () => window.open('https://docs.google.com/spreadsheets/d/1Sy2fHW-HJ0jE9hUZYH_ytBRqQfFQi4Pg/edit?usp=sharing&ouid=112996001461247382287&rtpof=true&sd=true', '_blank');
+  const goToMain = () => setPage('main');
+
+  // 출석부, 회비내역은 아직 미구현이므로 임시 화면
+  const renderAttendance = () => (
+    <div style={dummyPageStyle}>
+      <h2>출석부</h2>
+      <button style={backBtnStyle} onClick={goToMain}>메인으로</button>
+    </div>
+  );
+  const renderFee = () => (
+    <div style={dummyPageStyle}>
+      <h2>회비 내역</h2>
+      <button style={backBtnStyle} onClick={goToMain}>메인으로</button>
+    </div>
+  );
+
+  // 페이지 분기 구조
+  if (page === 'previous') {
+    return (
+      <div style={containerStyle}>
+        <PreviousHikes />
+        <div style={{ textAlign: 'center', margin: '20px 0' }}>
+          <button style={backBtnStyle} onClick={goToMain}>메인으로</button>
+        </div>
+        {/* 방문자 카운터 */}
+        <div
+          style={{
+            position: 'fixed',
+            right: 10,
+            bottom: 8,
+            zIndex: 100,
+            fontSize: '0.8rem',
+            opacity: 0.7
+          }}
+        >
+          <a href="https://www.hitwebcounter.com" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://hitwebcounter.com/counter/counter.php?page=20524626&style=0006&nbdigits=3&type=page&initCount=0"
+              title="Counter Widget"
+              alt="Visit counter For Websites"
+              style={{ height: 18, verticalAlign: 'middle', border: 0 }}
+            />
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  if (page === 'attendance') {
+    return (
+      <div style={containerStyle}>
+        {renderAttendance()}
+        {/* 방문자 카운터 */}
+        <div
+          style={{
+            position: 'fixed',
+            right: 10,
+            bottom: 8,
+            zIndex: 100,
+            fontSize: '0.8rem',
+            opacity: 0.7
+          }}
+        >
+          <a href="https://www.hitwebcounter.com" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://hitwebcounter.com/counter/counter.php?page=20524626&style=0006&nbdigits=3&type=page&initCount=0"
+              title="Counter Widget"
+              alt="Visit counter For Websites"
+              style={{ height: 18, verticalAlign: 'middle', border: 0 }}
+            />
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  if (page === 'fee') {
+    return (
+      <div style={containerStyle}>
+        {renderFee()}
+        {/* 방문자 카운터 */}
+        <div
+          style={{
+            position: 'fixed',
+            right: 10,
+            bottom: 8,
+            zIndex: 100,
+            fontSize: '0.8rem',
+            opacity: 0.7
+          }}
+        >
+          <a href="https://www.hitwebcounter.com" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://hitwebcounter.com/counter/counter.php?page=20524626&style=0006&nbdigits=3&type=page&initCount=0"
+              title="Counter Widget"
+              alt="Visit counter For Websites"
+              style={{ height: 18, verticalAlign: 'middle', border: 0 }}
+            />
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // 메인 페이지
+  return (
+    <div style={containerStyle}>
+      {/* 테스트 버전 안내 코멘트: 제목 위에 배치 */}
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 420,
+          margin: '0 auto',
+          textAlign: 'right',
+          color: '#aaa',
+          fontSize: '0.95rem',
+          fontWeight: 600,
+          opacity: 0.95,
+          padding: '12px 0 0 0'
+        }}
+      >
+        ※ 테스트 버전입니다. 구글정책상 로그인을 요구할 수도 있습니다. (by 총무)
+      </div>
+
+      {/* 제목 */}
+      <h1 style={titleStyle} className="main-title gradient-title">
+        <span style={{ fontSize: '1.2em', verticalAlign: 'middle' }}>🚂 수색차량</span>
+        <br />
+        우리산악회 산행 갤러리
+      </h1>
+
+      {/* 2. 사진 갤러리 */}
+      <div style={galleryGridStyle} className="gallery-grid">
+        {latestPhotos.map((url, idx) => (
+          <img
+            key={idx}
+            src={url}
+            alt={`최신 산행 사진 ${idx + 1}`}
+            style={thumbnailStyle}
+            onClick={openLatestGallery}
+            className="thumbnail"
+          />
+        ))}
+      </div>
+
+      {/* 3. 산행 정보 */}
+      <div style={commentSectionStyle} className="comment-section">
+        <div style={headerStyle} className="header">
+          <span style={dateStyle}>{latestHiking.date}</span>
+          <span style={locationStyle}>{latestHiking.location}</span>
+        </div>
+        <div style={infoStyle} className="hiking-info">
+          <span style={infoItemStyle}><span style={iconStyle}>👥</span>{latestHiking.participants}명</span>
+          <span style={infoItemStyle}><span style={iconStyle}>🗺️</span>{latestHiking.distance}</span>
+          <span style={infoItemStyle}><span style={iconStyle}>⛰️</span>{latestHiking.difficulty}</span>
+        </div>
+        <p style={commentTextStyle}>
+          {latestHiking.comment.split('\n').map((line, idx) => (
+            <React.Fragment key={idx}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </p>
+      </div>
+
+      {/* 4. 하단 버튼 */}
+      <div style={navButtonGroupStyle} className="nav-button-group">
+        <button
+          style={{ ...navButtonStyle, background: '#4f8cff' }}
+          onClick={goToPrevious}
+        >
+          <span style={navIconStyle}>🗂️</span>
+          <span>산행사진</span>
+        </button>
+        <button
+          style={{ ...navButtonStyle, background: '#43c59e' }}
+          onClick={goToAttendance}
+        >
+          <span style={navIconStyle}>📝</span>
+          <span>산행출석부</span>
+        </button>
+        <button
+          style={{ ...navButtonStyle, background: '#ffb400' }}
+          onClick={goToFee}
+        >
+          <span style={navIconStyle}>💰</span>
+          <span>회비내역</span>
+        </button>
+      </div>
+
+      {/* 모바일 스타일 */}
+      <style>
+        {`
+          @media (max-width: 600px) {
+            .main-title {
+              font-size: 9vw !important;
+              padding: 0 4vw !important;
+              white-space: nowrap !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              text-align: center !important;
+            }
+            .gallery-grid {
+              grid-template-columns: 1fr 1fr !important;
+              gap: 10px !important;
+              padding: 10px !important;
+              width: 95vw !important;
+              max-width: 95vw !important;
+            }
+            .thumbnail {
+              width: 100% !important;
+              height: 35vw !important;
+            }
+            .comment-section {
+              width: 95vw !important;
+              max-width: 95vw !important;
+              margin: 12px auto !important;
+              padding: 12px !important;
+              box-sizing: border-box !important;
+            }
+            .header {
+              align-items: center !important;
+              text-align: center !important;
+            }
+            .hiking-info {
+              justify-content: center !important;
+              gap: 15px !important;
+              margin-top: 8px !important;
+            }
+            .nav-button-group {
+              flex-direction: row !important;
+              gap: 10px !important;
+              width: 95vw !important;
+              margin: 0 auto 20px auto !important;
+              justify-content: center !important;
+            }
+            .nav-btn {
+              font-size: 0.9rem !important;
+              padding: 10px 0 !important;
+            }
+          }
+          .gradient-title {
+            background: linear-gradient(90deg, #4f8cff 10%, #43c59e 60%, #ffb400 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+          }
+        `}
+      </style>
+
+      {/* 방문자 카운터: 하단 우측에 고정 */}
+      <div
+        style={{
+          position: 'fixed',
+          right: 10,
+          bottom: 8,
+          zIndex: 100,
+          fontSize: '0.8rem',
+          opacity: 0.7
+        }}
+      >
+        <a href="https://www.hitwebcounter.com" target="_blank" rel="noopener noreferrer">
+          <img
+            src="https://hitwebcounter.com/counter/counter.php?page=20524626&style=0006&nbdigits=3&type=page&initCount=0"
+            title="Counter Widget"
+            alt="Visit counter For Websites"
+            style={{ height: 18, verticalAlign: 'middle', border: 0 }}
+          />
+        </a>
+      </div>
+    </div>
+  );
+}
 
 export default App;
