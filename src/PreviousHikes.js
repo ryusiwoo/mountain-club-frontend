@@ -4,10 +4,35 @@ import { hikes } from './hikesData';
 
 function PreviousHikes() {
   const [selected, setSelected] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null); // 확대된 이미지를 보여줄 상태 추가
 
   // 폴더로 이동 함수
   const goToFolder = (url) => {
     window.open(url, '_blank');
+  };
+
+  // 사진 클릭 및 호버 효과 추가
+  const handlePhotoClick = (url) => {
+    if (window.innerWidth <= 768) {
+      // 모바일 환경에서 클릭 시 확대된 이미지를 보여줌
+      setSelectedImage(url);
+    }
+  };
+
+  const handleMouseEnter = (e) => {
+    if (window.innerWidth > 768) { // PC 환경에서만 호버 효과 적용
+      e.target.style.transform = 'scale(2.5)'; // 사진을 더 크게 확대
+      e.target.style.boxShadow = '0 12px 36px rgba(0,0,0,0.2)';
+      e.target.style.zIndex = '10';
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    if (window.innerWidth > 768) {
+      e.target.style.transform = 'scale(1)';
+      e.target.style.boxShadow = 'none';
+      e.target.style.zIndex = '0';
+    }
   };
 
   return (
@@ -46,8 +71,9 @@ function PreviousHikes() {
                   src={url}
                   alt="산행사진"
                   style={modalPhotoStyle}
-                  onClick={() => goToFolder(selected.folderUrl)}
-                  title="사진 폴더로 이동"
+                  onClick={() => handlePhotoClick(url)} // 모바일 클릭 시 확대
+                  onMouseEnter={handleMouseEnter} // PC 호버 효과
+                  onMouseLeave={handleMouseLeave} // PC 호버 해제
                 />
               ))}
             </div>
@@ -68,6 +94,13 @@ function PreviousHikes() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* 확대된 이미지 모달 추가 */}
+      {selectedImage && (
+        <div style={modalOverlayStyle} onClick={() => setSelectedImage(null)}>
+          <img src={selectedImage} alt="확대된 사진" style={modalImageStyle} />
         </div>
       )}
     </div>
@@ -107,6 +140,19 @@ const closeBtnStyle = { background: '#eee', border: 'none', borderRadius: 6, pad
 const modalInfoStyle = { display: 'flex', gap: 12, fontSize: '0.95rem', color: '#444', margin: '8px 0 10px 0' };
 const modalCommentStyle = { fontSize: '0.95rem', color: '#555', marginBottom: 10 };
 const modalPhotoListStyle = { display: 'flex', gap: 8, flexWrap: 'wrap' };
-const modalPhotoStyle = { width: 90, height: 90, borderRadius: 8, objectFit: 'cover' };
+const modalPhotoStyle = {
+  width: 90,
+  height: 90,
+  borderRadius: 8,
+  objectFit: 'cover',
+  cursor: 'pointer',
+  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+};
+const modalImageStyle = {
+  maxWidth: '90%',
+  maxHeight: '90vh',
+  objectFit: 'contain',
+  borderRadius: 8,
+};
 
 export default PreviousHikes;
