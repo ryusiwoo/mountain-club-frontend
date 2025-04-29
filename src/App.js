@@ -327,16 +327,28 @@ function App() {
           width: '100%',
           maxWidth: 420,
           margin: '0 auto',
-          textAlign: 'right',
+          textAlign: 'right', // 우측 정렬
           color: '#aaa',
           fontSize: '0.95rem',
           fontWeight: 600,
           opacity: 0.95,
-          padding: '12px 0 0 0'
+          padding: '12px 0 0 0',
+          whiteSpace: 'pre-line', // 줄바꿈 처리
         }}
       >
-        ※ 테스트 버전입니다. 디자인과 기능 개선의견 환영합니다
+        ※ 테스트 버전입니다.{"\n"}디자인과 기능 개선의견 환영합니다
       </div>
+
+      <style>
+  {`
+    @media (max-width: 600px) {
+      .test-version-comment {
+        white-space: pre-line !important; /* 모바일에서도 줄바꿈 적용 */
+        text-align: right !important; /* 우측 정렬 유지 */
+      }
+    }
+  `}
+</style>
 
       {/* 제목 */}
       <h1 style={{...titleStyle, color: '#43c59e'}} className="main-title">
@@ -395,23 +407,56 @@ function App() {
 
       {/* 3. 산행 정보 */}
       <div style={commentSectionStyle} className="comment-section">
-        <div style={headerStyle} className="header">
-          <span style={dateStyle}>{latestHiking.date}</span>
-          <span style={locationStyle}>{latestHiking.location}</span>
+        <div style={{ position: 'relative' }}>
+          {/* 우천취소 표시 */}
+          
+          <div
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '-20px',
+              background: 'rgba(255, 0, 0, 0.8)',
+              color: '#fff',
+              fontWeight: 'bold',
+              fontSize: '1rem',
+              padding: '4px 8px',
+              transform: 'rotate(-45deg)',
+              zIndex: 10,
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+            }}
+          >
+            우천연기
+          </div>
+          
+
+          {/* 기존 산행 정보 */}
+          <div style={headerStyle} className="header">
+            <span style={dateStyle}>{latestHiking.date}</span>
+            <span style={locationStyle}>{latestHiking.location}</span>
+          </div>
+          <div style={infoStyle} className="hiking-info">
+            <span style={infoItemStyle}>
+              <span style={iconStyle}>👥</span>
+              {latestHiking.participants}명
+            </span>
+            <span style={infoItemStyle}>
+              <span style={iconStyle}>🗺️</span>
+              {latestHiking.distance}
+            </span>
+            <span style={infoItemStyle}>
+              <span style={iconStyle}>⛰️</span>
+              {latestHiking.difficulty}
+            </span>
+          </div>
+          <p style={commentTextStyle}>
+            {latestHiking.comment.split('\n').map((line, idx) => (
+              <React.Fragment key={idx}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </p>
         </div>
-        <div style={infoStyle} className="hiking-info">
-          <span style={infoItemStyle}><span style={iconStyle}>👥</span>{latestHiking.participants}명</span>
-          <span style={infoItemStyle}><span style={iconStyle}>🗺️</span>{latestHiking.distance}</span>
-          <span style={infoItemStyle}><span style={iconStyle}>⛰️</span>{latestHiking.difficulty}</span>
-        </div>
-        <p style={commentTextStyle}>
-          {latestHiking.comment.split('\n').map((line, idx) => (
-            <React.Fragment key={idx}>
-              {line}
-              <br />
-            </React.Fragment>
-          ))}
-        </p>
       </div>
 
       {/* 4. 하단 버튼 */}
