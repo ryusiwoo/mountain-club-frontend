@@ -30,6 +30,6 @@ export const hikes = [
         'https://i.imgur.com/YEltiSf.jpg',
         'https://i.imgur.com/6AxahPo.jpg'
       ],
-      folderUrl: 'https://imgur.com/a/250411-5FM4pT9' // 네이버 마이박스스 폴더 링크
+      folderUrl: 'https://galleries.js.org/?repo=ryusiwoo/mountain-club-frontend&path=photo/250411' // 네이버 마이박스스 폴더 링크
     }
   ];
