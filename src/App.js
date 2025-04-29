@@ -207,14 +207,8 @@ const modalImageStyle = {
 };
 
 function App() {
-  const [page, setPage] = useState('main');
   const [selectedImage, setSelectedImage] = useState(null);
-
-  // 최신 사진 폴더(갤러리)로 이동하는 함수
-  const openLatestGallery = () => {
-    alert('5월1일 봉산 이벤트 산행 후 사진 갤러리로 이동합니다! (추후 구현)');
-    // 실제로는 페이지 이동 또는 모달 오픈 등 구현
-  };
+  const [page, setPage] = useState('main');
 
   // 페이지 전환 함수
   const goToPrevious = () => setPage('previous');
