@@ -340,8 +340,28 @@ function App() {
 
       {/* 제목 */}
       <h1 style={{...titleStyle, color: '#43c59e'}} className="main-title">
-        <span style={{ fontSize: '1.2em', verticalAlign: 'middle' }}>🚄 수색차량</span>
-        <br />
+        <div style={{ 
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          marginBottom: '8px'
+        }}>
+          <img 
+            src="/korail_logo.png"
+            alt="KORAIL" 
+            style={{
+              height: '162px',  // 36px의 3배
+              width: 'auto',
+              verticalAlign: 'middle'
+            }}
+          />
+          <span style={{ 
+            fontSize: '1.2em',
+            color: '#333'
+          }}>
+            수색차량
+          </span>
+        </div>
         우리산악회 산행 갤러리
       </h1>
 
@@ -423,6 +443,9 @@ function App() {
       <style>
         {`
           @media (max-width: 600px) {
+            .main-title img {
+              height: 135px !important;  // 30px의 3배
+            }
             .main-title {
               font-size: 9vw !important;
               padding: 0 4vw !important;
