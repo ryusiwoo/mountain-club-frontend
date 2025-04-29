@@ -50,7 +50,8 @@ const galleryGridStyle = {
   boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
   maxWidth: 420,
   width: '95vw',
-  alignItems: 'flex-start'
+  alignItems: 'flex-start',
+  position: 'relative'
 };
 
 const thumbnailStyle = {
@@ -61,7 +62,9 @@ const thumbnailStyle = {
   cursor: 'pointer',
   boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
   transition: 'all 0.3s ease',
-  transformOrigin: 'left center'
+  transformOrigin: 'left center',
+  position: 'relative',
+  zIndex: 0
 };
 
 const commentSectionStyle = {
@@ -181,8 +184,31 @@ const backBtnStyle = {
   cursor: 'pointer'
 };
 
+// 모달 관련 스타일 추가
+const modalStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0,0,0,0.8)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 1000,
+  cursor: 'pointer'
+};
+
+const modalImageStyle = {
+  maxWidth: '90%',
+  maxHeight: '90vh',
+  objectFit: 'contain',
+  borderRadius: 8
+};
+
 function App() {
   const [page, setPage] = useState('main');
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // 최신 사진 폴더(갤러리)로 이동하는 함수
   const openLatestGallery = () => {
@@ -333,17 +359,21 @@ function App() {
             src={url}
             alt={`최신 산행 사진 ${idx + 1}`}
             style={thumbnailStyle}
-            onClick={openLatestGallery}
             className="thumbnail"
+            onClick={() => setSelectedImage(url)}
             onMouseEnter={(e) => {
-              e.target.style.transform = 'scale(3)';
-              e.target.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
-              e.target.style.zIndex = '1';
+              if (window.innerWidth > 768) {
+                e.target.style.transform = 'scale(3)';
+                e.target.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+                e.target.style.zIndex = '10';
+              }
             }}
             onMouseLeave={(e) => {
-              e.target.style.transform = 'scale(1)';
-              e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
-              e.target.style.zIndex = '0';
+              if (window.innerWidth > 768) {
+                e.target.style.transform = 'scale(1)';
+                e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+                e.target.style.zIndex = '0';
+              }
             }}
           />
         ))}
@@ -414,10 +444,13 @@ function App() {
               padding: 10px !important;
               width: 95vw !important;
               max-width: 95vw !important;
+              align-items: flex-start !important;
+              position: relative !important;
             }
             .thumbnail {
-              width: 100% !important;
-              height: 35vw !important;
+              width: 33% !important;
+              height: 70px !important;
+              position: relative !important;
             }
             .comment-section {
               width: 95vw !important;
@@ -447,6 +480,11 @@ function App() {
               padding: 10px 0 !important;
             }
           }
+
+          /* 호버 효과를 위한 z-index 관리 */
+          .thumbnail:hover {
+            z-index: 10 !important;
+          }
         `}
       </style>
 
@@ -470,6 +508,20 @@ function App() {
           />
         </a>
       </div>
+
+      {/* 이미지 모달 */}
+      {selectedImage && (
+        <div 
+          style={modalStyle} 
+          onClick={() => setSelectedImage(null)}
+        >
+          <img
+            src={selectedImage}
+            alt="확대된 산행 사진"
+            style={modalImageStyle}
+          />
+        </div>
+      )}
     </div>
   );
 }
