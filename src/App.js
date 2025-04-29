@@ -49,17 +49,19 @@ const galleryGridStyle = {
   padding: 20,
   boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
   maxWidth: 420,
-  width: '95vw'
+  width: '95vw',
+  alignItems: 'flex-start'
 };
 
 const thumbnailStyle = {
-  width: '100%',
-  height: '180px',
+  width: '33%',
+  height: '90px',
   objectFit: 'cover',
   borderRadius: 12,
   cursor: 'pointer',
   boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-  transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+  transition: 'all 0.3s ease',
+  transformOrigin: 'left center'
 };
 
 const commentSectionStyle = {
@@ -334,12 +336,14 @@ function App() {
             onClick={openLatestGallery}
             className="thumbnail"
             onMouseEnter={(e) => {
-              e.target.style.transform = 'scale(1.05) translateX(10px)';
+              e.target.style.transform = 'scale(3)';
               e.target.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+              e.target.style.zIndex = '1';
             }}
             onMouseLeave={(e) => {
-              e.target.style.transform = 'scale(1) translateX(0)';
+              e.target.style.transform = 'scale(1)';
               e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+              e.target.style.zIndex = '0';
             }}
           />
         ))}
