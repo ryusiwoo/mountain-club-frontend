@@ -14,7 +14,7 @@ const latestPhotos = [
 const latestHiking = {
   date: 'NEXT산행 2025.05.01',
   location: '의외의 전망 맛집 봉산! 함께해요~',
-  participants: '??',
+  participants: '00',
   distance: '6km',
   difficulty: '초급',
   comment: '진한 봄을 봉산에서 느끼다!\n비회원도 환영~ \n 회장 총무 또는 단톡방에 문의해주세요~'
