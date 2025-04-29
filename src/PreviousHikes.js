@@ -13,16 +13,13 @@ function PreviousHikes() {
 
   // 사진 클릭 및 호버 효과 추가
   const handlePhotoClick = (url) => {
-    if (window.innerWidth <= 768) {
-      // 모바일 환경에서 클릭 시 확대된 이미지를 보여줌
-      setSelectedImage(url);
-    }
+    setSelectedImage(url); // 클릭 시 확대된 이미지를 보여줄 상태 설정
   };
 
   const handleMouseEnter = (e) => {
     if (window.innerWidth > 768) { // PC 환경에서만 호버 효과 적용
-      e.target.style.transform = 'scale(2.5)'; // 사진을 더 크게 확대
-      e.target.style.boxShadow = '0 12px 36px rgba(0,0,0,0.2)';
+      e.target.style.transform = 'scale(1.5)';
+      e.target.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
       e.target.style.zIndex = '10';
     }
   };
@@ -71,9 +68,9 @@ function PreviousHikes() {
                   src={url}
                   alt="산행사진"
                   style={modalPhotoStyle}
-                  onClick={() => handlePhotoClick(url)} // 모바일 클릭 시 확대
-                  onMouseEnter={handleMouseEnter} // PC 호버 효과
-                  onMouseLeave={handleMouseLeave} // PC 호버 해제
+                  onClick={() => handlePhotoClick(url)} // 클릭 시 확대
+                  onMouseEnter={handleMouseEnter} // 호버 효과
+                  onMouseLeave={handleMouseLeave} // 호버 해제
                 />
               ))}
             </div>
