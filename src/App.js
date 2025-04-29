@@ -40,9 +40,9 @@ const titleStyle = {
 };
 
 const galleryGridStyle = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: 20,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 15,
   marginBottom: 18,
   background: 'rgba(255,255,255,0.8)',
   borderRadius: 16,
@@ -58,7 +58,8 @@ const thumbnailStyle = {
   objectFit: 'cover',
   borderRadius: 12,
   cursor: 'pointer',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+  transition: 'transform 0.3s ease, box-shadow 0.3s ease'
 };
 
 const commentSectionStyle = {
@@ -316,8 +317,8 @@ function App() {
       </div>
 
       {/* 제목 */}
-      <h1 style={titleStyle} className="main-title gradient-title">
-        <span style={{ fontSize: '1.2em', verticalAlign: 'middle' }}>🚂 수색차량</span>
+      <h1 style={{...titleStyle, color: '#43c59e'}} className="main-title">
+        <span style={{ fontSize: '1.2em', verticalAlign: 'middle' }}>🚄 수색차량</span>
         <br />
         우리산악회 산행 갤러리
       </h1>
@@ -332,6 +333,14 @@ function App() {
             style={thumbnailStyle}
             onClick={openLatestGallery}
             className="thumbnail"
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'scale(1.05) translateX(10px)';
+              e.target.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'scale(1) translateX(0)';
+              e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+            }}
           />
         ))}
       </div>
@@ -393,9 +402,10 @@ function App() {
               overflow: hidden !important;
               text-overflow: ellipsis !important;
               text-align: center !important;
+              color: #43c59e !important;
             }
             .gallery-grid {
-              grid-template-columns: 1fr 1fr !important;
+              flex-direction: column !important;
               gap: 10px !important;
               padding: 10px !important;
               width: 95vw !important;
@@ -432,13 +442,6 @@ function App() {
               font-size: 0.9rem !important;
               padding: 10px 0 !important;
             }
-          }
-          .gradient-title {
-            background: linear-gradient(90deg, #4f8cff 10%, #43c59e 60%, #ffb400 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
           }
         `}
       </style>
