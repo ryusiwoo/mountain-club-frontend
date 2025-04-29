@@ -350,7 +350,7 @@ function App() {
             src="/korail_logo.png"
             alt="KORAIL" 
             style={{
-              height: '162px',  // 36px의 3배
+              height: '40px',  // 36px의 3배
               width: 'auto',
               verticalAlign: 'middle'
             }}
@@ -444,7 +444,7 @@ function App() {
         {`
           @media (max-width: 600px) {
             .main-title img {
-              height: 135px !important;  // 30px의 3배
+              height: 90px !important;  // 30px의 3배
             }
             .main-title {
               font-size: 9vw !important;
