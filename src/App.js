@@ -444,7 +444,7 @@ function App() {
         {`
           @media (max-width: 600px) {
             .main-title img {
-              height: 90px !important;  // 30px의 3배
+              height: 40px !important;  // 30px의 3배
             }
             .main-title {
               font-size: 9vw !important;
