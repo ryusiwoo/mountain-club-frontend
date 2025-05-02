@@ -12,12 +12,12 @@ const latestPhotos = [
 
 // 최근 산행 정보
 const latestHiking = {
-  date: 'NEXT산행 2025.05.01',
-  location: '의외의 전망 맛집 봉산! 함께해요~',
+  date: 'NEXT산행 2025.05.09',
+  location: '이젠 찰떡 궁합~D조&C조',
   participants: '00',
   distance: '6km',
   difficulty: '초급',
-  comment: '진한 봄을 봉산에서 느끼다!\n비회원도 환영~ \n 회장 총무 또는 단톡방에 문의해주세요~'
+  comment: '사패산에 이어 다시 만난 C조 & D조!\n비회원도 환영~ \n 질투말고 B조도 함께해요~'
 };
 
 const containerStyle = {
@@ -425,7 +425,7 @@ function App() {
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
             }}
           >
-            우천연기
+            D조 단기산행
           </div>
           
 
