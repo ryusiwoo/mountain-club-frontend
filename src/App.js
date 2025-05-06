@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PreviousHikes from './PreviousHikes';
 import { db } from './firebase';
-import { ref, set, push, onValue, query, limitToLast } from "firebase/database";
+import { ref, set, push, onValue, query, limitToLast, get } from "firebase/database";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
 const latestPhotos = [
@@ -17,7 +17,7 @@ const latestPhotos = [
 const latestHiking = {
   date: 'NEXT산행 2025.05.09(금)',
   location: '의외의 전망 맛집!봉산',
-  participants: '00',
+  participants: '7+a',
   distance: '6km',
   difficulty: '초급',
   comment: '사패산에 이어 다시 만난 C조 & D조!\n비회원도 환영~ \n 질투말고 B조도 함께해요~'
@@ -276,6 +276,7 @@ function App() {
   const [showAllComments, setShowAllComments] = useState(false);
   const commentInputRef = useRef(null);
   const [user, setUser] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Firebase 익명 로그인
   useEffect(() => {
@@ -413,6 +414,57 @@ function App() {
       <button style={backBtnStyle} onClick={goToMain}>메인으로</button>
     </div>
   );
+
+  // 코멘트만 새로고침하는 함수
+  const refreshComments = () => {
+    if (!user) {
+      console.log("User not authenticated yet, skipping comment refresh.");
+      return;
+    }
+    
+    setIsRefreshing(true); // 새로고침 상태 시작
+    
+    const commentsRef = ref(db, 'comments');
+    const commentsQuery = showAllComments
+      ? query(commentsRef)
+      : query(commentsRef, limitToLast(5));
+    
+    // Firebase에서 데이터 한 번만 가져오기
+    get(commentsQuery)
+      .then((snapshot) => {
+        console.log("Firebase snapshot received on refresh:", snapshot.val());
+        const data = snapshot.val();
+        if (data) {
+          const commentsArray = Object.entries(data)
+            .map(([key, value]) => ({ id: key, ...value }))
+            .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+          console.log("Refreshed comments:", commentsArray);
+          setComments(commentsArray);
+        } else {
+          console.log("No comments data found on refresh.");
+          setComments([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error refreshing comments:", error);
+      })
+      .finally(() => {
+        // 새로고침 상태 종료(성공, 실패 모두)
+        setIsRefreshing(false);
+      });
+  };
+
+  // '더보기' 버튼 클릭 시 처리 함수
+  const handleShowMoreClick = () => {
+    setShowAllComments(true); // 모든 코멘트 보기 상태로 변경
+    refreshComments(); // 코멘트 새로고침
+  };
+
+  // '접기' 버튼 클릭 시 처리 함수
+  const handleShowLessClick = () => {
+    setShowAllComments(false); // 일부 코멘트만 보기 상태로 변경
+    refreshComments(); // 코멘트 새로고침
+  };
 
   // 페이지 분기 구조
   if (page === 'previous') {
@@ -599,7 +651,9 @@ function App() {
           
           <div style={commentListStyle}>
             {displayedComments.length === 0 && user && (
-              <div style={{textAlign: 'center', color: '#888', marginTop: '20px'}}>첫 코멘트를 남겨보세요!</div>
+              <div style={{textAlign: 'center', color: '#888', marginTop: '20px'}}>
+                {isRefreshing ? '코멘트를 불러오는 중...' : '첫 코멘트를 남겨보세요!'}
+              </div>
             )}
             {displayedComments.map((comment) => (
               <div key={comment.id} style={commentItemStyle}>
@@ -616,22 +670,49 @@ function App() {
             ))}
           </div>
           
-          {comments.length >= 5 && !showAllComments && (
-             <button
-               style={showMoreButtonStyle}
-               onClick={() => setShowAllComments(true)}
-             >
-               더보기
-             </button>
-          )}
-           {showAllComments && (
-             <button
-               style={showMoreButtonStyle}
-               onClick={() => setShowAllComments(false)}
-             >
-               접기
-             </button>
-           )}
+          {/* 새로고침 및 더보기/접기 버튼 컨테이너 */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+            {/* 새로고침 버튼 (왼쪽 정렬) */}
+            <button 
+              onClick={refreshComments}
+              disabled={isRefreshing || !user}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                color: '#4f8cff',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '5px', // showMoreButtonStyle과 동일하게
+                opacity: isRefreshing || !user ? 0.5 : 1,
+                // alignSelf: 'flex-start' // <- flex 컨테이너 안에서는 이것보다 justifyContent: 'space-between'이 더 적절
+              }}
+            >
+              {isRefreshing ? '새로고침 중...' : '새로고침 ↻'}
+            </button>
+
+            {/* 더보기/접기 버튼 (오른쪽 정렬은 기존 showMoreButtonStyle의 alignSelf: 'flex-end'로 처리되지만, flex 컨테이너에서는 margin-left: auto로 처리 가능) */}
+            <div> {/* 오른쪽 정렬을 위한 div 래퍼 */}
+              {comments.length >= 5 && !showAllComments && (
+                 <button
+                   style={{...showMoreButtonStyle, marginLeft: 'auto'}} // 오른쪽 정렬
+                   onClick={handleShowMoreClick}
+                 >
+                   더보기
+                 </button>
+              )}
+               {showAllComments && (
+                 <button
+                   style={{...showMoreButtonStyle, marginLeft: 'auto'}} // 오른쪽 정렬
+                   onClick={handleShowLessClick}
+                 >
+                   접기
+                 </button>
+               )}
+            </div>
+          </div>
         </div>
       </div>
 
