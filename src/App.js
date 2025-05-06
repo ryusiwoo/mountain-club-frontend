@@ -1,6 +1,9 @@
 // src/App.js
 import React, { useState, useRef, useEffect } from 'react';
 import PreviousHikes from './PreviousHikes';
+import { db } from './firebase';
+import { ref, set, push, onValue, query, limitToLast } from "firebase/database";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
 const latestPhotos = [
   // 임시 이미지 (나중에 실제 사진 url로 교체)
@@ -275,34 +278,115 @@ const showMoreButtonStyle = {
 function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [page, setPage] = useState('main');
-  const [comments, setComments] = useState(initialComments);
+  const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState('');
   const [showAllComments, setShowAllComments] = useState(false);
   const commentInputRef = useRef(null);
+  const [user, setUser] = useState(null);
 
-  // 로컬 스토리지에서 댓글 불러오기
+  // Firebase 익명 로그인
   useEffect(() => {
-    const savedComments = localStorage.getItem('mountainClubComments');
-    if (savedComments) {
-      setComments(JSON.parse(savedComments));
-    }
+    const auth = getAuth();
+    signInAnonymously(auth)
+      .then(() => {
+        console.log("Anonymous sign-in successful.");
+      })
+      .catch((error) => {
+        console.error("Anonymous sign-in failed:", error);
+      });
+
+    // 로그인 상태 추적
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("User is signed in:", user.uid);
+        setUser(user);
+      } else {
+        console.log("User is signed out.");
+        setUser(null);
+      }
+    });
+    // 컴포넌트 언마운트 시 인증 리스너 해제
+    return () => unsubscribeAuth();
   }, []);
 
-  // 댓글 저장
+  // Firebase에서 코멘트 불러오기 + 콘솔 로그 추가
   useEffect(() => {
-    localStorage.setItem('mountainClubComments', JSON.stringify(comments));
+    // 로그인 상태 확인 후 DB 접근
+    if (!user) {
+      console.log("User not authenticated yet, skipping comment fetch.");
+      return; // 아직 로그인 안됐으면 데이터 요청 안함
+    }
+    console.log("Fetching comments for user:", user.uid);
+
+    const commentsRef = ref(db, 'comments');
+    // 최신 5개 또는 전체 (Timestamp 기준으로 정렬 고려 - 현재는 키 순서)
+    const commentsQuery = showAllComments
+      ? query(commentsRef) // 필요시 orderByChild('timestamp') 추가
+      : query(commentsRef, limitToLast(5)); // 필요시 orderByChild('timestamp') 추가
+
+    const unsubscribeDB = onValue(commentsQuery, (snapshot) => {
+      console.log("Firebase snapshot received:", snapshot.val()); // <-- 데이터 확인용 로그
+      const data = snapshot.val();
+      if (data) {
+        const commentsArray = Object.entries(data)
+          .map(([key, value]) => ({ id: key, ...value }))
+          // timestamp 기준으로 내림차순(최신순) 정렬
+          .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+        console.log("Processed comments (sorted):", commentsArray); // <-- 처리된 배열 확인용 로그
+        setComments(commentsArray);
+      } else {
+        console.log("No comments data found in snapshot."); // <-- 데이터 없을 때 로그
+        setComments([]);
+      }
+    }, (error) => {
+      // 데이터 읽기 오류 처리
+      console.error("Error fetching comments:", error);
+      // 예: 권한 오류 발생 시 로그 확인 가능
+      if (error.code === 'PERMISSION_DENIED') {
+          console.error("PERMISSION_DENIED: Check your Realtime Database rules and authentication state.");
+      }
+    });
+
+    // 컴포넌트 언마운트 또는 showAllComments 변경 시 DB 리스너 해제
+    return () => {
+      console.log("Unsubscribing from DB listener.");
+      unsubscribeDB();
+    }
+  }, [showAllComments, user]); // user 상태가 변경될 때도 effect 재실행
+
+  // comments 상태 변경 확인용 로그 (디버깅용)
+  useEffect(() => {
+    console.log("Comments state updated:", comments);
   }, [comments]);
 
-  // 댓글 추가 함수
+  // 댓글 추가 함수 (수정 완료)
   const addComment = () => {
     if (commentInput.trim()) {
-      const newComment = {
-        id: Date.now(),
-        text: commentInput.trim(),
-        timestamp: new Date().toISOString()
-      };
-      setComments([newComment, ...comments]);
-      setCommentInput('');
+      if (!user) {
+        console.error("Cannot add comment: User not signed in.");
+        alert('로그인 중입니다. 잠시 후 다시 시도해주세요.'); // 사용자에게 안내
+        return;
+      }
+      const commentsRef = ref(db, 'comments');
+      const newCommentRef = push(commentsRef);
+
+      set(newCommentRef, {
+        message: commentInput.trim(),
+        timestamp: new Date().toISOString(),
+        userId: user.uid // 현재 로그인된 사용자의 ID 추가
+      })
+      .then(() => {
+          console.log("Comment added successfully!");
+          setCommentInput(''); // 성공 시 입력창 비우기
+      })
+      .catch((error) => {
+          console.error("Error adding comment:", error);
+          alert('댓글 등록에 실패했습니다. 다시 시도해주세요.');
+          // 예: 권한 오류 발생 시 로그 확인 가능
+          if (error.code === 'PERMISSION_DENIED') {
+              console.error("PERMISSION_DENIED: Check your Realtime Database rules and authentication state.");
+          }
+      });
     }
   };
 
@@ -314,10 +398,8 @@ function App() {
     }
   };
 
-  // 표시할 댓글 목록
-  const displayedComments = showAllComments 
-    ? comments 
-    : comments.slice(0, 5);
+  // 표시할 댓글 목록 (Firebase에서 정렬해서 가져오므로 그대로 사용)
+  const displayedComments = comments;
 
   // 페이지 전환 함수
   const goToPrevious = () => setPage('previous');
@@ -448,17 +530,6 @@ function App() {
         ※ 테스트 버전.{"\n"}개선의견 환영합니다
       </div>
 
-      <style>
-  {`
-    @media (max-width: 600px) {
-      .test-version-comment {
-        white-space: pre-line !important; /* 모바일에서도 줄바꿈 적용 */
-        text-align: right !important; /* 우측 정렬 유지 */
-      }
-    }
-  `}
-</style>
-
       {/* 제목 */}
       <h1 style={{...titleStyle, color: '#43c59e'}} className="main-title">
         <div style={{ 
@@ -525,17 +596,21 @@ function App() {
           <textarea
             ref={commentInputRef}
             style={commentInputStyle}
-            placeholder="코멘트를 입력하세요 (엔터키로 등록)"
+            placeholder={user ? "코멘트를 입력하세요 (엔터키로 등록)" : "로그인 중..."}
             value={commentInput}
             onChange={(e) => setCommentInput(e.target.value)}
             onKeyDown={handleKeyDown}
             rows={2}
+            disabled={!user}
           />
           
           <div style={commentListStyle}>
+            {displayedComments.length === 0 && user && (
+              <div style={{textAlign: 'center', color: '#888', marginTop: '20px'}}>첫 코멘트를 남겨보세요!</div>
+            )}
             {displayedComments.map((comment) => (
               <div key={comment.id} style={commentItemStyle}>
-                <div>{comment.text}</div>
+                <div>{comment.message}</div>
                 <div style={commentTimestampStyle}>
                   {new Date(comment.timestamp).toLocaleString('ko-KR', { 
                     month: 'short', 
@@ -548,14 +623,22 @@ function App() {
             ))}
           </div>
           
-          {comments.length > 5 && (
-            <button 
-              style={showMoreButtonStyle} 
-              onClick={() => setShowAllComments(!showAllComments)}
-            >
-              {showAllComments ? '접기' : '더보기'}
-            </button>
+          {comments.length >= 5 && !showAllComments && (
+             <button
+               style={showMoreButtonStyle}
+               onClick={() => setShowAllComments(true)}
+             >
+               더보기
+             </button>
           )}
+           {showAllComments && (
+             <button
+               style={showMoreButtonStyle}
+               onClick={() => setShowAllComments(false)}
+             >
+               접기
+             </button>
+           )}
         </div>
       </div>
 
