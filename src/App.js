@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PreviousHikes from './PreviousHikes';
 
 const latestPhotos = [
@@ -12,13 +12,20 @@ const latestPhotos = [
 
 // 최근 산행 정보
 const latestHiking = {
-  date: 'NEXT산행 2025.05.09',
-  location: '이젠 찰떡 궁합~D조&C조',
+  date: 'NEXT산행 2025.05.09(금)',
+  location: '의외의 전망 맛집!봉산',
   participants: '00',
   distance: '6km',
   difficulty: '초급',
-  comment: '사패산에 이어 다시 만난 C조 & D조!\n비회원도 환영~ \n 질투말고 B조도 함께해요~'
+  comment: '사패산에 이어 다시 만난 조 & D조!\n비회원도 환영~ \n 질투말고 B조도 함께해요~'
 };
+
+// 초기 댓글 데이터
+const initialComments = [
+  { id: 1, text: '멋진 사진이네요!', timestamp: new Date().toISOString() },
+  { id: 2, text: '다음 산행이 기대돼요~', timestamp: new Date().toISOString() },
+  { id: 3, text: '저도 참여하고 싶어요', timestamp: new Date().toISOString() },
+];
 
 const containerStyle = {
   minHeight: '100vh',
@@ -206,9 +213,111 @@ const modalImageStyle = {
   borderRadius: 8
 };
 
+// 댓글 섹션 스타일 추가
+const commentContainerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  width: '58%',
+  height: '400px',
+  padding: '0 10px',
+  boxSizing: 'border-box',
+  marginLeft: '10px',
+  position: 'relative'
+};
+
+const commentInputStyle = {
+  width: '100%',
+  padding: '8px 12px',
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  resize: 'none',
+  marginBottom: '10px',
+  fontSize: '0.9rem',
+  boxSizing: 'border-box'
+};
+
+const commentListStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  overflowY: 'auto',
+  flex: 1
+};
+
+const commentItemStyle = {
+  padding: '8px 12px',
+  backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  borderRadius: '8px',
+  fontSize: '0.9rem',
+  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+  wordBreak: 'break-word'
+};
+
+const commentTimestampStyle = {
+  fontSize: '0.7rem',
+  color: '#888',
+  marginTop: '4px',
+  textAlign: 'right'
+};
+
+const showMoreButtonStyle = {
+  alignSelf: 'flex-end',
+  border: 'none',
+  background: 'transparent',
+  color: '#4f8cff',
+  cursor: 'pointer',
+  fontWeight: 'bold',
+  padding: '5px',
+  fontSize: '0.9rem',
+  marginTop: '10px'
+};
+
 function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [page, setPage] = useState('main');
+  const [comments, setComments] = useState(initialComments);
+  const [commentInput, setCommentInput] = useState('');
+  const [showAllComments, setShowAllComments] = useState(false);
+  const commentInputRef = useRef(null);
+
+  // 로컬 스토리지에서 댓글 불러오기
+  useEffect(() => {
+    const savedComments = localStorage.getItem('mountainClubComments');
+    if (savedComments) {
+      setComments(JSON.parse(savedComments));
+    }
+  }, []);
+
+  // 댓글 저장
+  useEffect(() => {
+    localStorage.setItem('mountainClubComments', JSON.stringify(comments));
+  }, [comments]);
+
+  // 댓글 추가 함수
+  const addComment = () => {
+    if (commentInput.trim()) {
+      const newComment = {
+        id: Date.now(),
+        text: commentInput.trim(),
+        timestamp: new Date().toISOString()
+      };
+      setComments([newComment, ...comments]);
+      setCommentInput('');
+    }
+  };
+
+  // 엔터키 처리
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      addComment();
+    }
+  };
+
+  // 표시할 댓글 목록
+  const displayedComments = showAllComments 
+    ? comments 
+    : comments.slice(0, 5);
 
   // 페이지 전환 함수
   const goToPrevious = () => setPage('previous');
@@ -336,7 +445,7 @@ function App() {
           whiteSpace: 'pre-line', // 줄바꿈 처리
         }}
       >
-        ※ 테스트 버전입니다.{"\n"}디자인과 기능 개선의견 환영합니다
+        ※ 테스트 버전.{"\n"}개선의견 환영합니다
       </div>
 
       <style>
@@ -378,31 +487,76 @@ function App() {
       </h1>
 
       {/* 2. 사진 갤러리 */}
-      <div style={galleryGridStyle} className="gallery-grid">
-        {latestPhotos.map((url, idx) => (
-          <img
-            key={idx}
-            src={url}
-            alt={`최신 산행 사진 ${idx + 1}`}
-            style={thumbnailStyle}
-            className="thumbnail"
-            onClick={() => setSelectedImage(url)}
-            onMouseEnter={(e) => {
-              if (window.innerWidth > 768) {
-                e.target.style.transform = 'scale(3)';
-                e.target.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
-                e.target.style.zIndex = '10';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (window.innerWidth > 768) {
-                e.target.style.transform = 'scale(1)';
-                e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
-                e.target.style.zIndex = '0';
-              }
-            }}
+      <div style={{
+        ...galleryGridStyle,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+      }} className="gallery-grid">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 15, width: '38%' }}>
+          {latestPhotos.map((url, idx) => (
+            <img
+              key={idx}
+              src={url}
+              alt={`최신 산행 사진 ${idx + 1}`}
+              style={{...thumbnailStyle, width: '100%'}}
+              className="thumbnail"
+              onClick={() => setSelectedImage(url)}
+              onMouseEnter={(e) => {
+                if (window.innerWidth > 768) {
+                  e.target.style.transform = 'scale(3)';
+                  e.target.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+                  e.target.style.zIndex = '10';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (window.innerWidth > 768) {
+                  e.target.style.transform = 'scale(1)';
+                  e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+                  e.target.style.zIndex = '0';
+                }
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* 댓글 섹션 */}
+        <div style={commentContainerStyle}>
+          <textarea
+            ref={commentInputRef}
+            style={commentInputStyle}
+            placeholder="코멘트를 입력하세요 (엔터키로 등록)"
+            value={commentInput}
+            onChange={(e) => setCommentInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            rows={2}
           />
-        ))}
+          
+          <div style={commentListStyle}>
+            {displayedComments.map((comment) => (
+              <div key={comment.id} style={commentItemStyle}>
+                <div>{comment.text}</div>
+                <div style={commentTimestampStyle}>
+                  {new Date(comment.timestamp).toLocaleString('ko-KR', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          {comments.length > 5 && (
+            <button 
+              style={showMoreButtonStyle} 
+              onClick={() => setShowAllComments(!showAllComments)}
+            >
+              {showAllComments ? '접기' : '더보기'}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* 3. 산행 정보 */}
@@ -510,7 +664,7 @@ function App() {
               position: relative !important;
             }
             .thumbnail {
-              width: 33% !important;
+              width: 100% !important;
               height: 70px !important;
               position: relative !important;
             }
@@ -540,6 +694,16 @@ function App() {
             .nav-btn {
               font-size: 0.9rem !important;
               padding: 10px 0 !important;
+            }
+            /* 모바일에서 댓글 섹션 스타일 */
+            .gallery-grid > div:first-child {
+              width: 100% !important;
+            }
+            .gallery-grid > div:last-child {
+              width: 100% !important;
+              margin-left: 0 !important;
+              margin-top: 15px !important;
+              height: auto !important;
             }
           }
 
