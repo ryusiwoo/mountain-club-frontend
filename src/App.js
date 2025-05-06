@@ -17,7 +17,7 @@ const latestHiking = {
   participants: '00',
   distance: '6km',
   difficulty: '초급',
-  comment: '사패산에 이어 다시 만난 조 & D조!\n비회원도 환영~ \n 질투말고 B조도 함께해요~'
+  comment: '사패산에 이어 다시 만난 C조 & D조!\n비회원도 환영~ \n 질투말고 B조도 함께해요~'
 };
 
 // 초기 댓글 데이터
@@ -655,8 +655,8 @@ function App() {
               color: #43c59e !important;
             }
             .gallery-grid {
-              flex-direction: column !important;
-              gap: 10px !important;
+              flex-direction: row !important;
+              gap: 8px !important;
               padding: 10px !important;
               width: 95vw !important;
               max-width: 95vw !important;
@@ -697,13 +697,13 @@ function App() {
             }
             /* 모바일에서 댓글 섹션 스타일 */
             .gallery-grid > div:first-child {
-              width: 100% !important;
+              width: 45% !important;
             }
             .gallery-grid > div:last-child {
-              width: 100% !important;
-              margin-left: 0 !important;
-              margin-top: 15px !important;
-              height: auto !important;
+              width: 52% !important;
+              margin-left: 3% !important;
+              margin-top: 0 !important;
+              height: 300px !important;
             }
           }
 
