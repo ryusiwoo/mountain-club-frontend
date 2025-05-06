@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// import { getAnalytics } from "firebase/analytics"; // 사용하지 않으므로 주석 처리 또는 삭제
 import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
@@ -16,5 +16,5 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app); // 사용하지 않으므로 주석 처리 또는 삭제
 export const db = getDatabase(app); 

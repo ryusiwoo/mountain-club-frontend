@@ -23,13 +23,6 @@ const latestHiking = {
   comment: '사패산에 이어 다시 만난 C조 & D조!\n비회원도 환영~ \n 질투말고 B조도 함께해요~'
 };
 
-// 초기 댓글 데이터
-const initialComments = [
-  { id: 1, text: '멋진 사진이네요!', timestamp: new Date().toISOString() },
-  { id: 2, text: '다음 산행이 기대돼요~', timestamp: new Date().toISOString() },
-  { id: 3, text: '저도 참여하고 싶어요', timestamp: new Date().toISOString() },
-];
-
 const containerStyle = {
   minHeight: '100vh',
   background: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)',
