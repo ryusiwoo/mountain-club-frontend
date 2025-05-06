@@ -671,33 +671,14 @@ function App() {
           </div>
           
           {/* 새로고침 및 더보기/접기 버튼 컨테이너 */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
-            {/* 새로고침 버튼 (왼쪽 정렬) */}
-            <button 
-              onClick={refreshComments}
-              disabled={isRefreshing || !user}
-              style={{
-                border: 'none',
-                background: 'transparent',
-                color: '#4f8cff',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                padding: '5px', // showMoreButtonStyle과 동일하게
-                opacity: isRefreshing || !user ? 0.5 : 1,
-                // alignSelf: 'flex-start' // <- flex 컨테이너 안에서는 이것보다 justifyContent: 'space-between'이 더 적절
-              }}
-            >
-              {isRefreshing ? '새로고침 중...' : '새로고침 ↻'}
-            </button>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '10px' }}>
+            {/* 새로고침 버튼은 제거합니다 */}
 
-            {/* 더보기/접기 버튼 (오른쪽 정렬은 기존 showMoreButtonStyle의 alignSelf: 'flex-end'로 처리되지만, flex 컨테이너에서는 margin-left: auto로 처리 가능) */}
-            <div> {/* 오른쪽 정렬을 위한 div 래퍼 */}
+            {/* 더보기/접기 버튼 */}
+            <div>
               {comments.length >= 5 && !showAllComments && (
                  <button
-                   style={{...showMoreButtonStyle, marginLeft: 'auto'}} // 오른쪽 정렬
+                   style={showMoreButtonStyle}
                    onClick={handleShowMoreClick}
                  >
                    더보기
@@ -705,7 +686,7 @@ function App() {
               )}
                {showAllComments && (
                  <button
-                   style={{...showMoreButtonStyle, marginLeft: 'auto'}} // 오른쪽 정렬
+                   style={showMoreButtonStyle}
                    onClick={handleShowLessClick}
                  >
                    접기
