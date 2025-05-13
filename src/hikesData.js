@@ -1,7 +1,23 @@
 // src/hikesData.js
 export const hikes = [
-    {
-      id: 1,
+  {
+    id: 1,
+    date: '2024.05.13',
+    location: '봉산',
+    difficulty: '초초급',
+    participants: 9,
+    distance: '6km',
+    comment: '숲이 가까운 직장 다니는 것은 복이여',
+    photos: [
+      'https://i.imgur.com/Ij8yUwT.jpg',
+      'https://i.imgur.com/egDHWBT.jpg',
+      'https://i.imgur.com/u4AFqnN.jpg',
+      'https://i.imgur.com/PdvoTAA.jpg'
+  ],
+  folderUrl: 'https://imgur.com/a/DT5DNL0' // imgur 폴더 링크
+},
+  {
+      id: 2,
       date: '2024.04.24',
       location: '지리산 천왕봉',
       difficulty: '상급',
@@ -17,7 +33,7 @@ export const hikes = [
     folderUrl: 'https://imgur.com/a/250424-pzqrcID' // 네이버 마이박스스 폴더 링크
   },
     {
-      id: 2,
+      id: 3,
       date: '2024.04.11',
       location: '사패산',
       difficulty: '초급',
