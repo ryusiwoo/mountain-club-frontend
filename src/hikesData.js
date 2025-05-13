@@ -9,10 +9,10 @@ export const hikes = [
     distance: '6km',
     comment: '숲이 가까운 직장 다니는 것은 복이여',
     photos: [
-      'https://i.imgur.com/Ij8yUwT.jpg',
-      'https://i.imgur.com/egDHWBT.jpg',
-      'https://i.imgur.com/u4AFqnN.jpg',
-      'https://i.imgur.com/PdvoTAA.jpg'
+      'https://i.imgur.com/Mrefaif.jpeg',
+      '[img]https://i.imgur.com/VheDlvv.jpeg[/img]',
+      '[img]https://i.imgur.com/5AzVdKk.jpeg[/img]',
+      '[img]https://i.imgur.com/CBYKGAP.jpeg[/img]'
   ],
   folderUrl: 'https://imgur.com/a/DT5DNL0' // imgur 폴더 링크
 },
