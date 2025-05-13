@@ -1,28 +1,31 @@
 // src/App.js
+// 리액트 훅과 필요한 컴포넌트, Firebase 관련 라이브러리 임포트
 import React, { useState, useRef, useEffect } from 'react';
 import PreviousHikes from './PreviousHikes';
 import { db } from './firebase';
 import { ref, set, push, onValue, query, limitToLast, get } from "firebase/database";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
+// 최근 산행 사진들 (임시 이미지 - 추후 실제 데이터베이스 사진으로 대체 예정)
 const latestPhotos = [
-  // 임시 이미지 (나중에 실제 사진 url로 교체)
   'https://i.imgur.com/cqdhHsH.jpg',
   'https://i.imgur.com/C3cdN8y.jpg',
   'https://i.imgur.com/YDTdPjx.jpg',
   'https://i.imgur.com/rDsGHs6.jpg',
 ];
 
-// 최근 산행 정보
+// 최근 산행 정보 객체 - 산행의 주요 세부사항 저장
+// 이 객체는 최근 산행의 정보를 저장합니다.
 const latestHiking = {
-  date: '최근산행 2025.05.13(화)',
-  location: '의외의 전망 맛집!봉산',
-  participants: '9',
-  distance: '6km',
-  difficulty: '초급',
-  comment: '<지부장님 말씀>\n 즐거운 산행이었습니다.모두 고생하셨습니다.\n특히 회장 총무님, 마지막 계산까지 책임진 병수동지 감사~~^^'
+  date: '최근산행 2025.05.13(화)', // 산행 날짜
+  location: '의외의 전망 맛집!봉산', // 산행 장소
+  participants: '9', // 참가자 수
+  distance: '6km', // 총 거리
+  difficulty: '초급', // 난이도
+  comment: '<지부장님 말씀>\n 즐거운 산행이었습니다.모두 고생하셨습니다.\n특히 회장 총무님, 마지막 계산까지 책임진 병수동지 감사~~^^' // 산행 후기
 };
 
+// 컨테이너 스타일 - 앱의 전체 레이아웃을 정의합니다.
 const containerStyle = {
   minHeight: '100vh',
   background: 'linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%)',
@@ -277,6 +280,7 @@ function App() {
   const commentInputRef = useRef(null);
   const [user, setUser] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  
 
   // Firebase 익명 로그인
   useEffect(() => {
@@ -700,26 +704,28 @@ function App() {
       {/* 3. 산행 정보 */}
       <div style={commentSectionStyle} className="comment-section">
         <div style={{ position: 'relative' }}>
-          {/* 우천취소 표시 */}
-          
-          <div
-            style={{
-              position: 'absolute',
-              top: '10px',
-              right: '-20px',
-              background: 'rgba(255, 0, 0, 0.8)',
-              color: '#fff',
-              fontWeight: 'bold',
-              fontSize: '1rem',
-              padding: '4px 8px',
-              transform: 'rotate(-45deg)',
-              zIndex: 10,
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-            }}
-          >
-            D조 단기산행
-          </div>
-          
+          {/* 빨강배너 및 산행 정보 */}
+          {/* 빨강배너 시작 - 필요시 주석 처리 가능 */}
+          {false && ( // 배너를 숨기려면 false를 true로 변경
+            <div
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '-20px',
+                background: 'rgba(255, 0, 0, 0.8)', // 빨강색 배경
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: '1rem',
+                padding: '4px 8px',
+                transform: 'rotate(-45deg)',
+                zIndex: 10,
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              우천 취소
+            </div>
+          )}
+          {/* 빨강배너 끝 */}
 
           {/* 기존 산행 정보 */}
           <div style={headerStyle} className="header">
