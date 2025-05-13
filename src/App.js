@@ -15,12 +15,12 @@ const latestPhotos = [
 
 // 최근 산행 정보
 const latestHiking = {
-  date: 'NEXT산행 2025.05.13(화)',
+  date: '최근산행 2025.05.13(화)',
   location: '의외의 전망 맛집!봉산',
-  participants: '7+a',
+  participants: '9',
   distance: '6km',
   difficulty: '초급',
-  comment: '사패산에 이어 다시 만난 C조 & D조!\n비회원도 환영~ \n B조도 함께해요~'
+  comment: '<지부장님 말씀>\n 즐거운 산행이었습니다.모두 고생하셨습니다.\n특히 회장 총무님, 마지막 계산까지 책임진 병수동지 감사~~^^'
 };
 
 const containerStyle = {

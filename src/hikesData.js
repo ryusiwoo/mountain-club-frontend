@@ -4,15 +4,15 @@ export const hikes = [
     id: 1,
     date: '2024.05.13',
     location: '봉산',
-    difficulty: '초초급',
+    difficulty: '초급',
     participants: 9,
     distance: '6km',
-    comment: '숲이 가까운 직장 다니는 것은 복이여',
+    comment: '뒷산에서 즐기는 산림욕',
     photos: [
       'https://i.imgur.com/Mrefaif.jpeg',
-      '[img]https://i.imgur.com/VheDlvv.jpeg[/img]',
-      '[img]https://i.imgur.com/5AzVdKk.jpeg[/img]',
-      '[img]https://i.imgur.com/CBYKGAP.jpeg[/img]'
+      'https://i.imgur.com/VheDlvv.jpeg',
+      'https://i.imgur.com/5AzVdKk.jpeg',
+      'https://i.imgur.com/CBYKGAP.jpeg'
   ],
   folderUrl: 'https://imgur.com/a/DT5DNL0' // imgur 폴더 링크
 },
