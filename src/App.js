@@ -28,10 +28,10 @@ const latestHiking = {
 const nextHiking = {
   date: '다음산행 2025.05.30(금)', // 산행 날짜
   location: '치유의 길! 북한산 우이령길', // 산행 장소
-  participants: '모집중', // 참가자 수
-  distance: '7m', // 총 거리
+  participants: '00', // 참가자 수
+  distance: '6.8km', // 총 거리
   difficulty: '초급', // 난이도
-  comment: '맨발체험도 가능한 편안한 북한산 우이령길로 함께 떠나요!\n준비물: 등산화, 간식, 물' // 산행 안내
+  comment: '맨발체험도 가능한 편안한 우이령길로 함께 떠나요!\n준비물: 등산화, 간식, 물' // 산행 안내
 };
 
 // 컨테이너 스타일 - 앱의 전체 레이아웃을 정의합니다.
@@ -745,7 +745,32 @@ function App() {
         
       </div>
 
-      {/* 3. 산행 정보 */}
+      {/* 4. 하단 버튼 */}
+      <div style={navButtonGroupStyle} className="nav-button-group">
+        <button
+          style={{ ...navButtonStyle, background: '#4f8cff' }}
+          onClick={goToPrevious}
+        >
+          <span style={navIconStyle}>🗂️</span>
+          <span>산행사진</span>
+        </button>
+        <button
+          style={{ ...navButtonStyle, background: '#43c59e' }}
+          onClick={goToAttendance}
+        >
+          <span style={navIconStyle}>📝</span>
+          <span>산행출석부</span>
+        </button>
+        <button
+          style={{ ...navButtonStyle, background: '#ffb400' }}
+          onClick={goToFee}
+        >
+          <span style={navIconStyle}>💰</span>
+          <span>회비내역</span>
+        </button>
+      </div>
+
+      {/* 5. 다음 산행 정보 */}
       <div style={commentSectionStyle} className="comment-section">
         <div style={{ position: 'relative' }}>
           {/* 빨강배너 및 산행 정보 */}
@@ -771,9 +796,8 @@ function App() {
           )}
           {/* 빨강배너 끝 */}
 
-
           {/* 다음 산행 정보 */}
-          <div style={{...headerStyle, marginTop: '20px'}} className="header">
+          <div style={{...headerStyle, marginTop: '5px'}} className="header">
             <span style={{...dateStyle, color: '#4a90e2'}}>{nextHiking.date}</span>
             <span style={locationStyle}>{nextHiking.location}</span>
           </div>
@@ -800,31 +824,6 @@ function App() {
             ))}
           </p>
         </div>
-      </div>
-
-      {/* 4. 하단 버튼 */}
-      <div style={navButtonGroupStyle} className="nav-button-group">
-        <button
-          style={{ ...navButtonStyle, background: '#4f8cff' }}
-          onClick={goToPrevious}
-        >
-          <span style={navIconStyle}>🗂️</span>
-          <span>산행사진</span>
-        </button>
-        <button
-          style={{ ...navButtonStyle, background: '#43c59e' }}
-          onClick={goToAttendance}
-        >
-          <span style={navIconStyle}>📝</span>
-          <span>산행출석부</span>
-        </button>
-        <button
-          style={{ ...navButtonStyle, background: '#ffb400' }}
-          onClick={goToFee}
-        >
-          <span style={navIconStyle}>💰</span>
-          <span>회비내역</span>
-        </button>
       </div>
 
       {/* 모바일 스타일 */}
