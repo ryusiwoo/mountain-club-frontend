@@ -22,7 +22,16 @@ const latestHiking = {
   participants: '9', // 참가자 수
   distance: '6km', // 총 거리
   difficulty: '초급', // 난이도
-  comment: '<지부장님 말씀>\n 즐거운 산행이었습니다.모두 고생하셨습니다.\n특히 회장 총무님, 마지막 계산까지 책임진 병수동지 감사~~^^' // 산행 후기
+  comment: '즐거운 산행이었습니다.모두 고생하셨습니다.\n마지막 계산까지 책임진 병수동지 감사~~^^' // 산행 후기
+};
+
+const nextHiking = {
+  date: '다음산행 2025.05.30(금)', // 산행 날짜
+  location: '치유의 길! 북한산 우이령길', // 산행 장소
+  participants: '모집중', // 참가자 수
+  distance: '7m', // 총 거리
+  difficulty: '초급', // 난이도
+  comment: '맨발체험도 가능한 편안한 북한산 우이령길로 함께 떠나요!\n준비물: 등산화, 간식, 물' // 산행 안내
 };
 
 // 컨테이너 스타일 - 앱의 전체 레이아웃을 정의합니다.
@@ -701,33 +710,10 @@ function App() {
         </div>
       </div>
 
-      {/* 3. 산행 정보 */}
+      {/* 최근 산행 및 다음 산행 정보 */}
       <div style={commentSectionStyle} className="comment-section">
+        {/* 최근 산행 정보 */}
         <div style={{ position: 'relative' }}>
-          {/* 빨강배너 및 산행 정보 */}
-          {/* 빨강배너 시작 - 필요시 주석 처리 가능 */}
-          {false && ( // 배너를 숨기려면 false를 true로 변경
-            <div
-              style={{
-                position: 'absolute',
-                top: '10px',
-                right: '-20px',
-                background: 'rgba(255, 0, 0, 0.8)', // 빨강색 배경
-                color: '#fff',
-                fontWeight: 'bold',
-                fontSize: '1rem',
-                padding: '4px 8px',
-                transform: 'rotate(-45deg)',
-                zIndex: 10,
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-              }}
-            >
-              우천 취소
-            </div>
-          )}
-          {/* 빨강배너 끝 */}
-
-          {/* 기존 산행 정보 */}
           <div style={headerStyle} className="header">
             <span style={dateStyle}>{latestHiking.date}</span>
             <span style={locationStyle}>{latestHiking.location}</span>
@@ -748,6 +734,65 @@ function App() {
           </div>
           <p style={commentTextStyle}>
             {latestHiking.comment.split('\n').map((line, idx) => (
+              <React.Fragment key={idx}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </p>
+        </div>
+
+        
+      </div>
+
+      {/* 3. 산행 정보 */}
+      <div style={commentSectionStyle} className="comment-section">
+        <div style={{ position: 'relative' }}>
+          {/* 빨강배너 및 산행 정보 */}
+          {/* 빨강배너 시작 - 필요시 주석 처리 가능 */}
+          {false && ( // 배너를 보이게 하려면 true, 숨기려면 false로 변경
+            <div
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '-20px',
+                background: 'rgba(255, 0, 0, 0.8)', // 빨강색 배경
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: '1rem',
+                padding: '4px 8px',
+                transform: 'rotate(-45deg)',
+                zIndex: 10,
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              우천 취소
+            </div>
+          )}
+          {/* 빨강배너 끝 */}
+
+
+          {/* 다음 산행 정보 */}
+          <div style={{...headerStyle, marginTop: '20px'}} className="header">
+            <span style={{...dateStyle, color: '#4a90e2'}}>{nextHiking.date}</span>
+            <span style={locationStyle}>{nextHiking.location}</span>
+          </div>
+          <div style={infoStyle} className="hiking-info">
+            <span style={infoItemStyle}>
+              <span style={iconStyle}>👥</span>
+              {nextHiking.participants}명
+            </span>
+            <span style={infoItemStyle}>
+              <span style={iconStyle}>🗺️</span>
+              {nextHiking.distance}
+            </span>
+            <span style={infoItemStyle}>
+              <span style={iconStyle}>⛰️</span>
+              {nextHiking.difficulty}
+            </span>
+          </div>
+          <p style={commentTextStyle}>
+            {nextHiking.comment.split('\n').map((line, idx) => (
               <React.Fragment key={idx}>
                 {line}
                 <br />
