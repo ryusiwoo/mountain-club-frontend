@@ -710,78 +710,18 @@ function App() {
         </div>
       </div>
 
-      {/* 최근 산행 및 다음 산행 정보 */}
-      <div style={commentSectionStyle} className="comment-section">
-        {/* 최근 산행 정보 */}
-        <div style={{ position: 'relative' }}>
-          <div style={headerStyle} className="header">
-            <span style={dateStyle}>{latestHiking.date}</span>
-            <span style={locationStyle}>{latestHiking.location}</span>
-          </div>
-          <div style={infoStyle} className="hiking-info">
-            <span style={infoItemStyle}>
-              <span style={iconStyle}>👥</span>
-              {latestHiking.participants}명
-            </span>
-            <span style={infoItemStyle}>
-              <span style={iconStyle}>🗺️</span>
-              {latestHiking.distance}
-            </span>
-            <span style={infoItemStyle}>
-              <span style={iconStyle}>⛰️</span>
-              {latestHiking.difficulty}
-            </span>
-          </div>
-          <p style={commentTextStyle}>
-            {latestHiking.comment.split('\n').map((line, idx) => (
-              <React.Fragment key={idx}>
-                {line}
-                <br />
-              </React.Fragment>
-            ))}
-          </p>
-        </div>
-
-        
-      </div>
-
-      {/* 4. 하단 버튼 */}
-      <div style={navButtonGroupStyle} className="nav-button-group">
-        <button
-          style={{ ...navButtonStyle, background: '#4f8cff' }}
-          onClick={goToPrevious}
-        >
-          <span style={navIconStyle}>🗂️</span>
-          <span>산행사진</span>
-        </button>
-        <button
-          style={{ ...navButtonStyle, background: '#43c59e' }}
-          onClick={goToAttendance}
-        >
-          <span style={navIconStyle}>📝</span>
-          <span>산행출석부</span>
-        </button>
-        <button
-          style={{ ...navButtonStyle, background: '#ffb400' }}
-          onClick={goToFee}
-        >
-          <span style={navIconStyle}>💰</span>
-          <span>회비내역</span>
-        </button>
-      </div>
-
-      {/* 5. 다음 산행 정보 */}
+      {/* 다음 산행 정보 */}
       <div style={commentSectionStyle} className="comment-section">
         <div style={{ position: 'relative' }}>
           {/* 빨강배너 및 산행 정보 */}
           {/* 빨강배너 시작 - 필요시 주석 처리 가능 */}
-          {false && ( // 배너를 보이게 하려면 true, 숨기려면 false로 변경
+          {false && (
             <div
               style={{
                 position: 'absolute',
                 top: '10px',
                 right: '-20px',
-                background: 'rgba(255, 0, 0, 0.8)', // 빨강색 배경
+                background: 'rgba(255, 0, 0, 0.8)',
                 color: '#fff',
                 fontWeight: 'bold',
                 fontSize: '1rem',
@@ -817,6 +757,63 @@ function App() {
           </div>
           <p style={commentTextStyle}>
             {nextHiking.comment.split('\n').map((line, idx) => (
+              <React.Fragment key={idx}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </p>
+        </div>
+      </div>
+
+      {/* 2. 하단 버튼 */}
+      <div style={navButtonGroupStyle} className="nav-button-group">
+        <button
+          style={{ ...navButtonStyle, background: '#4f8cff' }}
+          onClick={goToPrevious}
+        >
+          <span style={navIconStyle}>🗂️</span>
+          <span>산행사진</span>
+        </button>
+        <button
+          style={{ ...navButtonStyle, background: '#43c59e' }}
+          onClick={goToAttendance}
+        >
+          <span style={navIconStyle}>📝</span>
+          <span>산행출석부</span>
+        </button>
+        <button
+          style={{ ...navButtonStyle, background: '#ffb400' }}
+          onClick={goToFee}
+        >
+          <span style={navIconStyle}>💰</span>
+          <span>회비내역</span>
+        </button>
+      </div>
+
+      {/* 3. 최근 산행 정보 */}
+      <div style={commentSectionStyle} className="comment-section">
+        <div style={{ position: 'relative' }}>
+          <div style={headerStyle} className="header">
+            <span style={dateStyle}>{latestHiking.date}</span>
+            <span style={locationStyle}>{latestHiking.location}</span>
+          </div>
+          <div style={infoStyle} className="hiking-info">
+            <span style={infoItemStyle}>
+              <span style={iconStyle}>👥</span>
+              {latestHiking.participants}명
+            </span>
+            <span style={infoItemStyle}>
+              <span style={iconStyle}>🗺️</span>
+              {latestHiking.distance}
+            </span>
+            <span style={infoItemStyle}>
+              <span style={iconStyle}>⛰️</span>
+              {latestHiking.difficulty}
+            </span>
+          </div>
+          <p style={commentTextStyle}>
+            {latestHiking.comment.split('\n').map((line, idx) => (
               <React.Fragment key={idx}>
                 {line}
                 <br />
