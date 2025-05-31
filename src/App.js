@@ -10,7 +10,7 @@ import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
 const latestPhotos = [
   'https://i.imgur.com/iqWSdXz.jpeg',
   'https://i.imgur.com/Mrefaif.jpeg',
-  'https://i.imgur.com/ULEuPw0.jpeg',
+  'https://i.imgur.com/knyo010.jpeg',
   'https://i.imgur.com/TdWmdUX.jpeg',
 ];
 
