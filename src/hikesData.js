@@ -1,7 +1,23 @@
 // src/hikesData.js
 export const hikes = [
-  {
+{
     id: 1,
+    date: '2024.05.30',
+    location: '우이령길',
+    difficulty: '초급',
+    participants: 10,
+    distance: '6.8km',
+    comment: '명품 숲 둘레길',
+    photos: [
+      'https://i.imgur.com/EFGFYkX.jpeg',
+      'https://i.imgur.com/TwHAtj2.jpeg',
+      'https://i.imgur.com/dtNuzQ7.jpeg',
+      'https://i.imgur.com/LzuHeSu.jpeg'
+  ],
+  folderUrl: 'https://imgur.com/a/DqQJm3x' // imgur 폴더 링크
+},
+  {
+    id: 2,
     date: '2024.05.13',
     location: '봉산',
     difficulty: '초급',
@@ -17,7 +33,7 @@ export const hikes = [
   folderUrl: 'https://imgur.com/a/DT5DNL0' // imgur 폴더 링크
 },
   {
-      id: 2,
+      id: 3,
       date: '2024.04.24',
       location: '지리산 천왕봉',
       difficulty: '상급',
@@ -33,7 +49,7 @@ export const hikes = [
     folderUrl: 'https://imgur.com/a/250424-pzqrcID' // 네이버 마이박스스 폴더 링크
   },
     {
-      id: 3,
+      id: 4,
       date: '2024.04.11',
       location: '사패산',
       difficulty: '초급',

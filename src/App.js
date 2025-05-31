@@ -28,10 +28,10 @@ const latestHiking = {
 const nextHiking = {
   date: '다음산행 2025.05.30(금)', // 산행 날짜
   location: '치유의 길! 북한산 우이령길', // 산행 장소
-  participants: '00', // 참가자 수
+  participants: '10', // 참가자 수
   distance: '6.8km', // 총 거리
   difficulty: '초급', // 난이도
-  comment: '맨발체험도 가능한 편안한 우이령길로 함께 떠나요!\n준비물: 등산화, 간식, 물' // 산행 안내
+  comment: '석구라 강추! 석굴암 절경이였습니다.\n' // 산행 안내
 };
 
 // 컨테이너 스타일 - 앱의 전체 레이아웃을 정의합니다.
@@ -791,7 +791,8 @@ function App() {
         </button>
       </div>
 
-      {/* 3. 최근 산행 정보 */}
+      {/* 3. 최근 산행 정보 - 임시 숨김 */}
+      {/*
       <div style={commentSectionStyle} className="comment-section">
         <div style={{ position: 'relative' }}>
           <div style={headerStyle} className="header">
@@ -822,6 +823,7 @@ function App() {
           </p>
         </div>
       </div>
+      */}
 
       {/* 모바일 스타일 */}
       <style>
