@@ -9,6 +9,7 @@ export const hikes = [
     distance: '6.8km',
     comment: '명품 숲 둘레길',
     photos: [
+      'https://i.imgur.com/iqWSdXz.jpeg',
       'https://i.imgur.com/EFGFYkX.jpeg',
       'https://i.imgur.com/TwHAtj2.jpeg',
       'https://i.imgur.com/dtNuzQ7.jpeg',
