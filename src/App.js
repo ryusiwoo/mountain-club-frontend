@@ -8,10 +8,10 @@ import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
 // 최근 산행 사진들 (임시 이미지 - 추후 실제 데이터베이스 사진으로 대체 예정)
 const latestPhotos = [
-  'https://i.imgur.com/cqdhHsH.jpg',
-  'https://i.imgur.com/C3cdN8y.jpg',
-  'https://i.imgur.com/YDTdPjx.jpg',
-  'https://i.imgur.com/rDsGHs6.jpg',
+  'https://i.imgur.com/iqWSdXz.jpeg',
+  'https://i.imgur.com/Mrefaif.jpeg',
+  'https://i.imgur.com/ULEuPw0.jpeg',
+  'https://i.imgur.com/TdWmdUX.jpeg',
 ];
 
 // 최근 산행 정보 객체 - 산행의 주요 세부사항 저장
