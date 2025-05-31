@@ -27,7 +27,7 @@ const latestHiking = {
 };
 
 const nextHiking = {
-  date: '다음산행 2025.05.30(금)', // 산행 날짜
+  date: '최근산행 2025.05.30(금)', // 산행 날짜
   location: '치유의 길! 북한산 우이령길', // 산행 장소
   participants: '10', // 참가자 수
   distance: '6.8km', // 총 거리
