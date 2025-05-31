@@ -793,7 +793,7 @@ function App() {
       </div>
 
       {/* 3. 최근 산행 정보 - 임시 숨김 */}
-      {/*
+      
       <div style={commentSectionStyle} className="comment-section">
         <div style={{ position: 'relative' }}>
           <div style={headerStyle} className="header">
@@ -824,7 +824,7 @@ function App() {
           </p>
         </div>
       </div>
-      */}
+     
 
       {/* 모바일 스타일 */}
       <style>
