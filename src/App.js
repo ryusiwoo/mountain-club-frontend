@@ -16,6 +16,7 @@ const latestPhotos = [
 
 // 최근 산행 정보 객체 - 산행의 주요 세부사항 저장
 // 이 객체는 최근 산행의 정보를 저장합니다.
+// eslint-disable-next-line no-unused-vars
 const latestHiking = {
   date: '최근산행 2025.05.13(화)', // 산행 날짜
   location: '의외의 전망 맛집!봉산', // 산행 장소
