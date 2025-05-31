@@ -16,9 +16,9 @@ const latestPhotos = [
 
 // 최근 산행 정보 객체 - 산행의 주요 세부사항 저장
 // 이 객체는 최근 산행의 정보를 저장합니다.
-eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars
 const latestHiking = {
-  date: '다음산행 2025.06.06(금) 18시시', // 산행 날짜
+  date: '다음산행 2025.06.06(금) 18시', // 산행 날짜
   location: '서울 야경 맛집!족두리봉', // 산행 장소
   participants: '00', // 참가자 수
   distance: '6km', // 총 거리
@@ -765,9 +765,7 @@ function App() {
             ))}
           </p>
         </div>
-      </div>
-
-      {/* 2. 하단 버튼 */}
+      </div>      {/* 2. 하단 버튼 */}
       <div style={navButtonGroupStyle} className="nav-button-group">
         <button
           style={{ ...navButtonStyle, background: '#4f8cff' }}
@@ -792,8 +790,7 @@ function App() {
         </button>
       </div>
 
-      {/* 3. 최근 산행 정보 - 임시 숨김 */}
-      
+      {/* 3. 최근 산행 정보 */}
       <div style={commentSectionStyle} className="comment-section">
         <div style={{ position: 'relative' }}>
           <div style={headerStyle} className="header">
