@@ -16,14 +16,14 @@ const latestPhotos = [
 
 // 최근 산행 정보 객체 - 산행의 주요 세부사항 저장
 // 이 객체는 최근 산행의 정보를 저장합니다.
-// eslint-disable-next-line no-unused-vars
+eslint-disable-next-line no-unused-vars
 const latestHiking = {
-  date: '최근산행 2025.05.13(화)', // 산행 날짜
-  location: '의외의 전망 맛집!봉산', // 산행 장소
-  participants: '9', // 참가자 수
+  date: '다음산행 2025.06.06(금) 18시시', // 산행 날짜
+  location: '서울 야경 맛집!족두리봉', // 산행 장소
+  participants: '00', // 참가자 수
   distance: '6km', // 총 거리
   difficulty: '초급', // 난이도
-  comment: '즐거운 산행이었습니다.모두 고생하셨습니다.\n마지막 계산까지 책임진 병수동지 감사~~^^' // 산행 후기
+  comment: '이맛에 서울 사는 것\n 족두리봉에서 일몰보고 가게맥주 한잔~' // 산행 후기
 };
 
 const nextHiking = {
